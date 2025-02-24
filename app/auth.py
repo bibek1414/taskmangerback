@@ -47,7 +47,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise credentials_exception
         
-    from main import db  # Import here to avoid circular import
+    from app.main import db  # Import here to avoid circular import
     user = await db.users.find_one({"email": email})
     if user is None:
         raise credentials_exception

@@ -20,13 +20,18 @@ load_dotenv()
 
 app = FastAPI(title="Task Management API")
 
-# Updated CORS middleware configuration
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:3000")
+origins = ALLOWED_ORIGINS.split(",")
+
+# Then update your CORS middleware:
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"],
+    max_age=86400,
 )
 
 # MongoDB connection
@@ -109,6 +114,7 @@ async def login(credentials: dict):
     except Exception as e:
         print(f"Error during login: {e}")  # Debug log
         raise HTTPException(status_code=500, detail=str(e))
+
 @app.post("/api/tasks", response_model=Task)
 async def create_task(task: TaskCreate, current_user: User = Depends(get_current_user)):
     try:
@@ -211,7 +217,11 @@ async def get_tasks(
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+@app.get("/api/test")
+async def test_endpoint():
+    return {"status": "ok", "message": "Backend is working!"}
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
