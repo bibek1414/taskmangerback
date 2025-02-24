@@ -20,7 +20,7 @@ load_dotenv()
 
 app = FastAPI(title="Task Management API")
 
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:3000")
+ALLOWED_ORIGINS="http://localhost:5173,http://localhost:3000,https://taskmanagerfront-sandy.vercel.app"
 origins = ALLOWED_ORIGINS.split(",")
 
 # Then update your CORS middleware:
