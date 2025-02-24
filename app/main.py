@@ -5,11 +5,11 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from datetime import datetime, timedelta
 from typing import Optional, List
 from bson import ObjectId
-from models import (
+from app.models import (
     User, UserInDB, Task, TaskCreate, TaskUpdate,
     TokenData, Token, UserCreate
 )
-from auth import (
+from app.auth import (
     get_current_user, create_access_token,
     get_password_hash, verify_password
 )
